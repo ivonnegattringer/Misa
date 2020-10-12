@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "misa-2021": {
+      "hosting": {
+        "MisaKitchen": [
+          "misa-2021"
+        ]
+      }
+    }
+  }
+}
