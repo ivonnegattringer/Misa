@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "629756915148",
+    "firebase_url": "https://misa-2021.firebaseio.com",
+    "project_id": "misa-2021",
+    "storage_bucket": "misa-2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629756915148:android:21959c9f96e1ed67e18169",
+        "android_client_info": {
+          "package_name": "com.example.clientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629756915148-jtvvvm1b0qdqcddepr8dlf7esjia1r4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVDyXNOsn2Et1rhEdzDR9N1oM7Mu_Bj5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629756915148-jtvvvm1b0qdqcddepr8dlf7esjia1r4j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
