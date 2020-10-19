@@ -1,3 +1,5 @@
 <div>
-    <p>Test</p>
+    <span class="badge">{{order.id}}</span> 
+    Food: <ul><li *ngFor="food in order.food">{{food}}</li></ul>
+    Drinks: <ul><li *ngFor="drink in order.drinks">{{drink}}</li></ul>
 </div>

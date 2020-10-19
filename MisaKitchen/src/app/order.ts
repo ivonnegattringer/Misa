@@ -1,5 +1,5 @@
-export class Order {
-    constructor(
-        public id = 0
-    ) {}
+export interface Order {
+    id: number;
+    food: string[];
+    drinks: string[];
 }
