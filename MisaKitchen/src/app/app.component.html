@@ -1,3 +1,8 @@
-<div *ngFor="let order of orders; let i = index">
-    <order-detail [order]="order"></order-detail>
-</div>
+<ul class="orders">
+    <li class="text" *ngFor="let order of testOrders"
+    [class.selected]="order === selectedOrder"
+    (click)="onSelect(order)">
+        <order-detail [order]="order"></order-detail>
+    </li>
+</ul>
+
