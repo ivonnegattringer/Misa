@@ -8,9 +8,17 @@ import 'food.dart';
 import 'food_card.dart';
 import 'order.dart';
 import 'table.dart';
-void main() => runApp(MaterialApp(
-    home: Home()
-));
+Future <void> main() async{
+try {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  } on CameraException catch (e) {
+  print(e);
+}
+  runApp(MaterialApp(
+  home: Home()
+  ));
+}
 
 List<CameraDescription> cameras = [];
 
