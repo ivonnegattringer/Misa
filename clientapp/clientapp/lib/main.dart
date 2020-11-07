@@ -1,8 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'ML/take_image.dart';
 import 'package:camera/camera.dart';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import 'drink.dart';
 import 'food.dart';
 import 'food_card.dart';
@@ -37,9 +38,27 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
+ class _HomeState extends State<Home> {
+  //final databaseReference = Firestore.instance;
 
-class _HomeState extends State<Home> {
- // final databaseReference = Firestore.instance;
+
+  Future<void> getDrinks() async {
+    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('drinks');
+    final results = await callable();
+    List drinks = results.data;
+    print(drinks);
+  }
+
+
+  void getData() {
+  /*  databaseReference
+        .collection("drinks")
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) => print('${f.data}}'));
+    });*/
+  }
+
 
   List<Food> foodsList = [
     Food("Spaghetti", 7.50, "Spaghetti, Bolognese Sauce"),
@@ -81,7 +100,7 @@ class _HomeState extends State<Home> {
                 Icons.restaurant_sharp,
                 color: Colors.redAccent,
               ),
-              label: "Speisen")
+              label: "Speisen"),
         ]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Container(
@@ -95,16 +114,18 @@ class _HomeState extends State<Home> {
                     Icons.add_a_photo_outlined,
                     color: Colors.redAccent,
                   ),
-                  onPressed: () { Navigator.push(
+                  onPressed: () => getDrinks()
+                  /*{ Navigator.push(
                       context,
                       MaterialPageRoute(
                       builder: (context) => ML(),
                     )
                   );
-                  },
-                )
+                  },*/
+                ),
             )
         ),
+
 
     );
   }
