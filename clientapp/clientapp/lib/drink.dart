@@ -1,9 +1,14 @@
 class Drink{
   String name;
-  double price;
+  int price;
 
-  Drink(String name, double price){
-    this.name = name;
-    this.price = price;
+
+  Drink({this.name, this.price});
+
+  factory Drink.fromJson(Map<String, dynamic> json){
+    return Drink(
+      name: json['name'],
+      price: json['price'],
+    );
   }
 }
