@@ -1,5 +1,5 @@
 export interface Order {
-    id: number;
+    tableId: number;
     food: string[];
     drinks: string[];
 }
