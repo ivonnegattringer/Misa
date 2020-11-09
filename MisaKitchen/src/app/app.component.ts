@@ -21,9 +21,9 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.testOrders = new Array<Order>();
-    let newOrder = {id: 0, food: ["Pizza", "schnitzel"], drinks: ["Cola", "Wasser"]};
+    let newOrder = {tableId: 0, food: ["Pizza", "Schnitzel"], drinks: ["Cola", "Wasser"]};
     this.testOrders.push(newOrder);
-    newOrder = {id: 1, food: ["Reis"], drinks: ["Fanta"]};
+    newOrder = {tableId: 1, food: ["Reis"], drinks: ["Fanta"]};
     this.testOrders.push(newOrder);
   }
 

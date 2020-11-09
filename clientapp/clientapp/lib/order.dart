@@ -9,11 +9,16 @@ class Order{
   List<Drink> drinks;
   bool done;
 
-  Order(DateTime created, Table table, List<Food> foods, List<Drink> drinks){
-    this.created = created;
-    this.table = table;
-    this.foods = foods;
-    this.drinks = drinks;
-    this.done = false;
+
+  Order({this.created, this.table, this.foods, this.drinks, this.done});
+
+  factory Order.fromJson(Map<String, dynamic> json){
+    return Order(
+      created: json['name'],
+      table: json['table'],
+      foods: json['foods'],
+      drinks: json['drinks'],
+      done: json['done']
+    );
   }
 }
