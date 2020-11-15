@@ -1,9 +1,9 @@
 <div class="left">
-    <span class="badge">{{order.tableId}}</span>
+    <span class="badge">{{order.table.tableId}}</span>
 </div>
 <div class="right">
-    Food: <ul><li *ngFor="let food of order.food">{{food}}</li></ul>
-    Drinks: <ul><li *ngFor="let drink of order.drinks">{{drink}}</li></ul>
+    Food: <ul><li *ngFor="let food of order.foods">{{food.name}}</li></ul>
+    Drinks: <ul><li *ngFor="let drink of order.drinks">{{drink.name}}</li></ul>
 </div>
 
 

@@ -17,14 +17,17 @@ export class AppComponent implements OnInit{
 
   constructor(db: AngularFirestore){
     this.orders = db.collection('orders').valueChanges();
+    this.orders.forEach(order => {
+      console.log(order);
+    });
   }
 
   ngOnInit() {
     this.testOrders = new Array<Order>();
-    let newOrder = {tableId: 0, food: ["Pizza", "Schnitzel"], drinks: ["Cola", "Wasser"]};
+    /*let newOrder = {table: {tableId: 1, tableIdentifier: "dog"}, food: ["Pizza", "Schnitzel"], drinks: ["Cola", "Wasser"]};
     this.testOrders.push(newOrder);
-    newOrder = {tableId: 1, food: ["Reis"], drinks: ["Fanta"]};
-    this.testOrders.push(newOrder);
+    newOrder = {table: {tableId: 2, tableIdentifier: "cat"}, food: ["Reis"], drinks: ["Fanta"]};
+    this.testOrders.push(newOrder);*/
   }
 
   onSelect(order: Order): void {
