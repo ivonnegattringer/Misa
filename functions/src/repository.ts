@@ -1,6 +1,7 @@
 import { Drink, drinkConverter } from "./Entities/Drink"
 import { Food, foodConverter } from "./Entities/Food";
 import { Order, orderConverter } from "./Entities/Order";
+import { Restaurant, RestaurantConverter } from "./Entities/Restaurant";
 import { Table, tableConverter } from "./Entities/Table";
 
 const admin = require('firebase-admin');
@@ -11,6 +12,7 @@ export class Repository{
     static drinks = 'drinks'
     static orders = 'orders'
     static tables = 'tables'
+    static restaurants = 'restaurants'
 
     static async createDrinks(drinks: Drink[]){
         await Promise.all(drinks.map(async (drink) => {
@@ -30,6 +32,7 @@ export class Repository{
           }));
         return "created";
     }
+
     static async createDrink(drink : Drink) {
         await admin.firestore().collection(this.drinks)
         .doc(drink.name)
@@ -40,16 +43,16 @@ export class Repository{
     }
     static async createTable(table : Table){
         await admin.firestore().collection(this.tables)
-        .doc(table.tableId)
-        .withConverter(tableConverter)
-        .set(table)
+            .doc(table.tableId)
+            .withConverter(tableConverter)
+            .set(table)
         return "created";
     }
     static async createFood(food : Food){
         await admin.firestore().collection(this.food)
-        .doc(food.name)
-        .withConverter(foodConverter)
-        .set(food)
+            .doc(food.name)
+            .withConverter(foodConverter)
+            .set(food)
         return "created"
     }
     static async createOrder(order : Order){
@@ -59,48 +62,50 @@ export class Repository{
 
         return "created";
     }
+
+    static async createRestaurant(order : Restaurant){
+        await admin.firestore().collection(this.restaurants)
+            .doc(order.name)
+            .withConverter(RestaurantConverter)
+            .add(order)
+        
+        return "created";
+    }
+
+    static async restaurantExists(restaurant: string) : Promise<boolean>{
+        var snapshot = await admin.firestore().collectionGroup(this.restaurants).where('name', '==', restaurant).get();
+
+        if(snapshot.length ==0){
+            return false;
+        }
+        return true;
+    }
+
     static async getFoods() :Promise<Food[]>{
-        const snapshot = await admin.firestore().collection(this.food).get();
-        let foods : Food[]=[]
-
-        snapshot.forEach((doc: { id: string | number; data: () => Food; }) => {
-            foods.push(doc.data())
-        });
-
-        return foods
+        return this.getAll<Food>(this.food);
     };
 
     static async getAllOrders() :Promise<Order[]>{
-        const snapshot = await admin.firestore().collection(this.orders).get();
-        let order : Order[]=[]
-
-        snapshot.forEach((doc: { id: string | number; data: () => Order; }) => {
-            order.push(doc.data())   
-        });
-
-        return order
+        return this.getAll<Order>(this.orders);
     };
 
     static async getDrinks() :Promise<Drink[]>{
-        const snapshot = await admin.firestore().collection(this.drinks).get();
-        let foods : Drink[]=[]
-
-        snapshot.forEach((doc: { id: string | number; data: () => Drink; }) => {
-            foods.push(doc.data())   
-        });
-
-        return foods
+        return this.getAll<Drink>(this.drinks);
     };
 
     static async getTables() :Promise<Table[]>{
-        const snapshot = await admin.firestore().collection(this.tables).get();
-        let foods : Table[]=[]
+        return this.getAll<Table>(this.tables);
 
-        snapshot.forEach((doc: { id: string | number; data: () => Table; }) => {
-            foods.push(doc.data())   
+    };
+    
+    static async getAll<T>(arr : string) : Promise<T[]> {
+        const snapshot = await admin.firestore().collection(arr).get();
+        let t : T[]=[]
+
+        snapshot.forEach((doc: { id: string | number; data: () => T; }) => {
+            t.push(doc.data())   
         });
 
-        return foods
-    };
-  
+        return t
+    }
 }

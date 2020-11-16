@@ -2,19 +2,9 @@ import * as functions from 'firebase-functions';
 import { Drink } from './Entities/Drink';
 import { Food } from './Entities/Food';
 import { Order } from './Entities/Order';
+import { Restaurant } from './Entities/Restaurant';
 import { Table } from './Entities/Table';
 import { Repository } from './repository';
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
-// const admin = require('firebase-admin');
-// admin.initializeApp();
 
 const express = require('express');
 const cors = require('cors');
@@ -31,6 +21,11 @@ app.use(cors({ origin: true }));
 router.post('/addDrink', (req: any, res: any) => {
   var drinks : Drink = req.body
   Repository.createDrink(drinks)
+    .then(r=>res.send("created"))
+})
+router.post('/addRestaurant', (req: any, res: any) => {
+  var drinks : Restaurant = req.body
+  Repository.createRestaurant(drinks)
     .then(r=>res.send("created"))
 })
 router.post('/addDrinks', (req: any, res: any) => {
