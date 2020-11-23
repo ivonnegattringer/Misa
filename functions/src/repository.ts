@@ -14,6 +14,12 @@ export class Repository{
     static tables = 'tables'
     static restaurants = 'restaurants'
 
+    static async setOrderDone(order: Order) {
+        await admin.firestore().collection(this.orders)
+        .doc()
+        .withConverter(orderConverter)
+        .set()
+    }
     static async createDrinks(drinks: Drink[]){
         await Promise.all(drinks.map(async (drink) => {
             await this.createDrink(drink);
@@ -56,9 +62,11 @@ export class Repository{
         return "created"
     }
     static async createOrder(order : Order){
-        await admin.firestore().collection(this.orders)
-            .withConverter(orderConverter)
-            .add(order)
+        var ref = await admin.firestore().collection(this.orders).doc()
+        order.id = ref.id;
+
+        await ref.withConverter(orderConverter)
+            .set(order)
 
         return "created";
     }

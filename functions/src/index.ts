@@ -17,7 +17,11 @@ app.use(express.json({
 }));
 
 app.use(cors({ origin: true }));
-  
+router.post('/setOrderDone', (req: any, res: any) => {
+  var drinks : Order = req.body
+  Repository.setOrderDone(drinks)
+    .then(r=>res.send("done"))
+})
 router.post('/addDrink', (req: any, res: any) => {
   var drinks : Drink = req.body
   Repository.createDrink(drinks)
