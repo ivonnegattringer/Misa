@@ -5,10 +5,10 @@ export class Restaurant{
         this.name = identifier
     }
 }
-export var RestaurantConverter = {
-    toFirestore: function(Restaurant: Restaurant) {
+export var restaurantConverter = {
+    toFirestore: function(restaurant: Restaurant) {
         return {
-            name: Restaurant.name
+            name: restaurant.name
             }
     },
     fromFirestore: function(snapshot: any, options: any){

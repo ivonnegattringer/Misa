@@ -1,1 +1,4 @@
 *.log
+firebase.json
+commitevery10min.sh
+.firebaserc
