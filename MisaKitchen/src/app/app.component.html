@@ -1,8 +1,7 @@
 <ul class="orders">
-    <li class="text" *ngFor="let order of testOrders"
+    <li class="text" *ngFor="let order of orders | async;"
     [class.selected]="order === selectedOrder"
     (click)="onSelect(order)">
         <order-detail [order]="order"></order-detail>
     </li>
 </ul>
-

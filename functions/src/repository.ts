@@ -1,6 +1,7 @@
 import { Drink, drinkConverter } from "./Entities/Drink"
 import { Food, foodConverter } from "./Entities/Food";
 import { Order, orderConverter } from "./Entities/Order";
+import { Restaurant, restaurantConverter } from "./Entities/Restaurant";
 import { Table, tableConverter } from "./Entities/Table";
 
 const admin = require('firebase-admin');
@@ -11,96 +12,129 @@ export class Repository{
     static drinks = 'drinks'
     static orders = 'orders'
     static tables = 'tables'
+    static restaurants = 'restaurants'
 
-    static async createDrinks(drinks: Drink[]){
+    static async setOrderDone(order: Order, restaurant: string) {
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        order.done = true
+        await admin.firestore().collection(restaurant+this.orders)
+            .doc(order.id)
+            .withConverter(orderConverter)
+            .set(order)
+        return order
+    }
+    static async createDrinks(drinks: Drink[], restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
         await Promise.all(drinks.map(async (drink) => {
-            await this.createDrink(drink);
+            await this.createDrink(drink, restaurant);
           }));
         return "created";
     }
-    static async createFoods(foods: Food[]){
+    static async createFoods(foods: Food[], restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
         await Promise.all(foods.map(async (food) => {
-            await this.createFood(food);
+            await this.createFood(food,restaurant);
           }));
         return "created";
     }
-    static async createTables(tables: Table[]){
+    static async createTables(tables: Table[], restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
         await Promise.all(tables.map(async (table) => {
-            await this.createTable(table);
+            await this.createTable(table,restaurant);
           }));
         return "created";
     }
-    static async createDrink(drink : Drink) {
-        await admin.firestore().collection(this.drinks)
+
+    static async createDrink(drink : Drink, restaurant: string) {
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        await admin.firestore().collection(restaurant+this.drinks)
         .doc(drink.name)
         .withConverter(drinkConverter)
         .set(drink)
         
         return "created";
     }
-    static async createTable(table : Table){
-        await admin.firestore().collection(this.tables)
-        .doc(table.tableId)
-        .withConverter(tableConverter)
-        .set(table)
-        return "created";
+    static async createTable(table : Table, restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        var ref = await admin.firestore().collection(restaurant+this.tables).doc()
+        table.tableId = ref.id;
+
+        await ref.withConverter(tableConverter)
+            .set(table)
+
+        return table.tableId;
     }
-    static async createFood(food : Food){
-        await admin.firestore().collection(this.food)
-        .doc(food.name)
-        .withConverter(foodConverter)
-        .set(food)
+    static async createFood(food : Food, restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        await admin.firestore().collection(restaurant+this.food)
+            .doc(food.name)
+            .withConverter(foodConverter)
+            .set(food)
         return "created"
     }
-    static async createOrder(order : Order){
-        await admin.firestore().collection(this.orders)
-            .withConverter(orderConverter)
-            .add(order)
+    static async createOrder(order : Order, restaurant: string){
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        var ref = await admin.firestore().collection(restaurant+this.orders).doc()
+        order.id = ref.id;
 
+        await ref.withConverter(orderConverter)
+            .set(order)
+
+        return order.id;
+    }
+
+    static async createRestaurant(order : Restaurant):Promise<string>{
+        await admin.firestore().collection(this.restaurants)
+            .doc(order.name)
+            .withConverter(restaurantConverter)
+            .set(order)
+        
         return "created";
     }
-    static async getFoods() :Promise<Food[]>{
-        const snapshot = await admin.firestore().collection(this.food).get();
-        let foods : Food[]=[]
 
-        snapshot.forEach((doc: { id: string | number; data: () => Food; }) => {
-            foods.push(doc.data())
-        });
+    static async restaurantExists(restaurant: string) : Promise<boolean>{
+        var snapshot = await admin.firestore().collectionGroup(this.restaurants).where('name', '==', restaurant).get();
 
-        return foods
+        if(snapshot.empty){
+            return false;
+        }
+        return true;
+    }
+    static async idExistsInCollection(collection: string, id:string) : Promise<boolean>{
+        var snapshot = await admin.firestore().collectionGroup(collection).doc(id).get();
+
+        if(snapshot.exists){
+            return true;
+        }
+        return false;
+    }
+
+    static async getFoods(restaurant: string) :Promise<Food[]>{
+        return this.getAll<Food>(this.food,restaurant);
     };
 
-    static async getAllOrders() :Promise<Order[]>{
-        const snapshot = await admin.firestore().collection(this.orders).get();
-        let order : Order[]=[]
-
-        snapshot.forEach((doc: { id: string | number; data: () => Order; }) => {
-            order.push(doc.data())   
-        });
-
-        return order
+    static async getAllOrders(restaurant: string) :Promise<Order[]>{
+        return this.getAll<Order>(this.orders,restaurant);
     };
 
-    static async getDrinks() :Promise<Drink[]>{
-        const snapshot = await admin.firestore().collection(this.drinks).get();
-        let foods : Drink[]=[]
-
-        snapshot.forEach((doc: { id: string | number; data: () => Drink; }) => {
-            foods.push(doc.data())   
-        });
-
-        return foods
+    static async getDrinks(restaurant: string) :Promise<Drink[]>{
+        return this.getAll<Drink>(this.drinks,restaurant);
     };
 
-    static async getTables() :Promise<Table[]>{
-        const snapshot = await admin.firestore().collection(this.tables).get();
-        let foods : Table[]=[]
+    static async getTables(restaurant: string) :Promise<Table[]>{
+        return this.getAll<Table>(this.tables,restaurant);
 
-        snapshot.forEach((doc: { id: string | number; data: () => Table; }) => {
-            foods.push(doc.data())   
+    };
+    
+    static async getAll<T>(arr : string, restaurant:string) : Promise<T[]> {
+        if(!await this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        const snapshot = await admin.firestore().collection(restaurant+arr).get();
+        let t : T[]=[]
+
+        snapshot.forEach((doc: { id: string | number; data: () => T; }) => {
+            t.push(doc.data())   
         });
 
-        return foods
-    };
-  
+        return t
+    }
 }

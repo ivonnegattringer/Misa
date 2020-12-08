@@ -1,5 +1,15 @@
 export interface Order {
-    tableId: number;
-    food: string[];
-    drinks: string[];
+    table: {
+        tableId: number,
+        tableIdentifier: string
+    };
+    foods: {
+        ingredients: string,
+        name: string,
+        price: number
+    }[];
+    drinks: {
+        name: string,
+        price: number
+    }[];
 }
