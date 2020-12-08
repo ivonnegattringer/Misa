@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'drink.dart';
 import 'food.dart';
 import 'table.dart';
@@ -20,5 +22,15 @@ class Order{
       drinks: json['drinks'],
       done: json['done']
     );
+  }
+
+   Map toJson(){
+    return{
+      'created': created.toString(),
+      'table': table.toJson(),
+      'foods': foods,
+      'drinks': drinks,
+      'done': done.toString()
+    };
   }
 }

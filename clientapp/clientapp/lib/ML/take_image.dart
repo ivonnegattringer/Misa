@@ -10,10 +10,7 @@ class ML extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ML Vision',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Misa',
       home: CameraScreen(),
     );
   }
@@ -86,7 +83,8 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ML Vision'),
+        title: Text('Misa'),
+        backgroundColor: Colors.red[400],
       ),
       body: _controller.value.isInitialized
           ? Stack(
@@ -96,9 +94,9 @@ class _CameraScreenState extends State<CameraScreen> {
             padding: const EdgeInsets.all(20.0),
             child: Container(
               alignment: Alignment.bottomCenter,
-              child: RaisedButton.icon(
-                icon: Icon(Icons.camera),
-                label: Text("Click"),
+              child: FloatingActionButton(
+                backgroundColor: Colors.red[400],
+                child: Icon(Icons.camera_alt),
                 onPressed: () async {
                   await _takePicture().then((String path) {
                     if (path != null) {
