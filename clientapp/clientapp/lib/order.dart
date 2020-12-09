@@ -1,31 +1,27 @@
-import 'dart:convert';
-
 import 'drink.dart';
 import 'food.dart';
 import 'table.dart';
 
-class Order{
+class Order {
   DateTime created;
   Table table;
   List<Food> foods;
   List<Drink> drinks;
   bool done;
 
-
   Order({this.created, this.table, this.foods, this.drinks, this.done});
 
-  factory Order.fromJson(Map<String, dynamic> json){
+  factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-      created: json['name'],
-      table: json['table'],
-      foods: json['foods'],
-      drinks: json['drinks'],
-      done: json['done']
-    );
+        created: json['name'],
+        table: json['table'],
+        foods: json['foods'],
+        drinks: json['drinks'],
+        done: json['done']);
   }
 
-   Map toJson(){
-    return{
+  Map toJson() {
+    return {
       'created': created.toString(),
       'table': table.toJson(),
       'foods': foods,
