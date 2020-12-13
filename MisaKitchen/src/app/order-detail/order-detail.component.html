@@ -4,7 +4,7 @@
 <div class="right">
     <div *ngIf="order.foods.length > 0">Food: <ul><li *ngFor="let food of order.foods">{{food.name}}</li></ul></div>
     <div *ngIf="order.drinks.length > 0">Drinks: <ul><li *ngFor="let drink of order.drinks">{{drink.name}}</li></ul></div> 
-    <button (click)="setDone()">Done</button>
+    <button *ngIf="selected" (click)="setDone()">Done</button>
 </div>
 
 

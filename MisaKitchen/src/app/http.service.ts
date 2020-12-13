@@ -15,9 +15,6 @@ export class HttpService {
     this.http.post("https://us-central1-misa-2021.cloudfunctions.net/rest/Misa/setOrderDone", order)
     .subscribe((data: Response) => console.log(data));
     console.log("Order " + order.id + " done");
-    //this.http.get("http://worldclockapi.com/api/json/utc/now")
-    //.subscribe((data: Response) => console.log(data));
-    console.log(JSON.stringify(order));
   }
 
 }

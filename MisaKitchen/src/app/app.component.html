@@ -1,8 +1,12 @@
+<div class="header">
+    <a href="#" class="logo">Misa</a>
+</div>
+
 <ul class="orders">
     <li class="text" *ngFor="let order of orders | async;"
     (click)="onSelect(order)">
 
-        <order-detail [class.selected]="order === selectedOrder" *ngIf="!order.done" [order]="order"></order-detail>
+        <order-detail [class.selected]="order === selectedOrder" *ngIf="!order.done" [order]="order" [selected]="order == selectedOrder"></order-detail>
         
     </li>
 </ul>

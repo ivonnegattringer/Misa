@@ -10,6 +10,7 @@ import { Order } from '../order'
 })
 export class OrderDetailComponent{
   @Input() order: Order;
+  @Input() selected: boolean;
   http : HttpService;
   constructor(http : HttpService) {
     this.http = http
