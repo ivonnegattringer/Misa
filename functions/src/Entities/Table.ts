@@ -1,8 +1,8 @@
 export class Table{
     tableIdentifier : string =""
-    tableId : number = 0
+    tableId : string = ""
 
-    constructor (identifier : string = "", tableId : number = 0){
+    constructor (identifier : string = "", tableId : string = ""){
         this.tableIdentifier = identifier
         this.tableId = tableId
     }

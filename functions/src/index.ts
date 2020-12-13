@@ -2,19 +2,9 @@ import * as functions from 'firebase-functions';
 import { Drink } from './Entities/Drink';
 import { Food } from './Entities/Food';
 import { Order } from './Entities/Order';
+import { Restaurant } from './Entities/Restaurant';
 import { Table } from './Entities/Table';
 import { Repository } from './repository';
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
-// const admin = require('firebase-admin');
-// admin.initializeApp();
 
 const express = require('express');
 const cors = require('cors');
@@ -27,59 +17,124 @@ app.use(express.json({
 }));
 
 app.use(cors({ origin: true }));
-  
-router.post('/addDrink', (req: any, res: any) => {
-  var drinks : Drink = req.body
-  Repository.createDrink(drinks)
-    .then(r=>res.send("created"))
-})
-router.post('/addDrinks', (req: any, res: any) => {
-  var drinks : Drink[] = req.body
-  Repository.createDrinks(drinks)
-    .then(r=>res.send("created"))
-})
-router.post('/addFood', (req: any, res: any) => {
-  var drinks : Food = req.body
-  Repository.createFood(drinks)
-    .then(r=>res.send(r))
-})
-router.post('/addFoods', (req: any, res: any) => {
-  var drinks : Food[] = req.body
-  Repository.createFoods(drinks)
-    .then(r=>res.send(r))
-})
-router.post('/addTable', (req: any, res: any) => {
-  var drinks : Table = req.body
-  Repository.createTable(drinks)
-    .then(r=>res.send(r))
-})
-router.post('/addTables', (req: any, res: any) => {
-  var drinks : Table[] = req.body
-  Repository.createTables(drinks)
-    .then(r=>res.send(r))
-})
-router.post('/createOrder', (req: any, res: any) => {
-  functions.logger.info("called create Order")
+router.post('/:restaurant/setOrderDone', (req: any, res: any) => {
   var drinks : Order = req.body
-  Repository.createOrder(drinks)
+  Repository.setOrderDone(drinks, req.params.restaurant)
     .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/addDrink', (req: any, res: any) => {
+  var drinks : Drink = req.body
+  Repository.createDrink(drinks, req.params.restaurant)
+    .then(r=>res.send("created"))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/addRestaurant', (req: any, res: any) => {
+  var rest : Restaurant = req.body
+  Repository.createRestaurant(rest)
+    .then(r=>res.send(r))
+})
+router.post('/:restaurant/addDrinks', (req: any, res: any) => {
+  var drinks : Drink[] = req.body
+  Repository.createDrinks(drinks, req.params.restaurant)
+    .then(r=>res.send("created"))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/addFood', (req: any, res: any) => {
+  var drinks : Food = req.body
+  Repository.createFood(drinks, req.params.restaurant)
+    .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/addFoods', (req: any, res: any) => {
+  var drinks : Food[] = req.body
+  Repository.createFoods(drinks, req.params.restaurant)
+    .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/addTable', (req: any, res: any) => {
+  var drinks : Table = req.body
+  Repository.createTable(drinks, req.params.restaurant)
+    .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/addTables', (req: any, res: any) => {
+  var drinks : Table[] = req.body
+  Repository.createTables(drinks, req.params.restaurant)
+    .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.post('/:restaurant/createOrder', (req: any, res: any) => {
+  var orders : Order = req.body
+  Repository.createOrder(orders, req.params.restaurant)
+    .then(r=>res.send(r))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
 })
 
-router.get('/getFoods', (req: any, res: any) => {
-  Repository.getFoods()
+router.get('/:restaurant/getFoods', (req: any, res: any) => {
+  functions.logger.info("called getRestaurant" +req.params.restaurant)
+  Repository.getFoods( req.params.restaurant)
     .then(data => res.send(data))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
 })
-router.get('/getDrinks', (req: any, res: any) => {
-  Repository.getDrinks()
+router.get('/:restaurant/getDrinks', (req: any, res: any) => {
+  Repository.getDrinks( req.params.restaurant)
     .then(data => res.send(data))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
 })
-router.get('/getTables', (req: any, res: any) => {
-  Repository.getTables()
+router.get('/:restaurant/getTables', (req: any, res: any) => {
+  Repository.getTables( req.params.restaurant)
     .then(data => res.send(data))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
 })
-router.get('/getOrders', (req: any, res: any) => {
-  Repository.getAllOrders()
+router.get('/:restaurant/getOrders', (req: any, res: any) => {
+  Repository.getAllOrders(req.params.restaurant)
     .then(data => res.send(data))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
+})
+router.get('/:restaurant', (req: any, res: any) => {
+  Repository.restaurantExists(req.params.restaurant)
+    .then(data => res.send(data))
+    .catch(error => {
+      res.status(500)
+      res.send(error.message)
+    })
 })
 router.get('/test', (req: any, res: any) => {
   res.send( "hello darling")
