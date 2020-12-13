@@ -1,4 +1,5 @@
 export interface Order {
+    id: string;
     table: {
         tableId: number,
         tableIdentifier: string
@@ -12,4 +13,6 @@ export interface Order {
         name: string,
         price: number
     }[];
+    done: boolean;
+    created: string;
 }

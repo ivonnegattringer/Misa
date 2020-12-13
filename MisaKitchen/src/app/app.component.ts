@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Order } from './order';
 import { AngularFirestore } from '@angular/fire/firestore'
-import { Observable, Observer } from 'rxjs';
+import { Observable } from 'rxjs';
+import { HttpService } from "./http.service";
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+
 
 @Component({
   selector: 'app-root',
@@ -13,13 +16,16 @@ export class AppComponent implements OnInit{
   orders: Observable<any[]>;
   testOrders: Order[];
   selectedOrder: Order;
-  //orderObserver: Observer<>;
+  http: HttpService
 
-  constructor(db: AngularFirestore){
-    this.orders = db.collection('orders').valueChanges();
-    this.orders.forEach(order => {
+  @ViewChild(OrderDetailComponent ) childs: OrderDetailComponent[] ;
+
+  constructor(db: AngularFirestore, http: HttpService){
+    this.orders = db.collection('Misaorders').valueChanges();
+    /*this.orders.forEach(order => {
       console.log(order);
-    });
+    });*/
+    this.http = http;
   }
 
   ngOnInit() {
@@ -32,5 +38,11 @@ export class AppComponent implements OnInit{
 
   onSelect(order: Order): void {
     this.selectedOrder = order;
+  }
+
+  onDone(): void {
+    if (this.selectedOrder != null) {
+      this.selectedOrder = null;
+    }
   }
 }

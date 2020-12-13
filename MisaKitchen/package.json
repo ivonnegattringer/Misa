@@ -22,7 +22,9 @@
     "@angular/router": "~10.1.4",
     "angularfire2": "^5.4.2",
     "firebase": "^7.23.0",
+    "http": "0.0.1-security",
     "rxjs": "~6.6.0",
+    "service": "^0.1.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
