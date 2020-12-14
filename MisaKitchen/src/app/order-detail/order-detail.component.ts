@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { from } from 'rxjs';
+import { HttpService } from '../http.service';
 import { Order } from '../order'
 
 @Component({
@@ -9,6 +10,14 @@ import { Order } from '../order'
 })
 export class OrderDetailComponent{
   @Input() order: Order;
-  constructor() { }
+  @Input() selected: boolean;
+  http : HttpService;
+  constructor(http : HttpService) {
+    this.http = http
+  }
 
+
+  setDone() : void{
+    this.http.setDone(this.order)
+  }
 }

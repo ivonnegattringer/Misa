@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'food.dart';
+import 'drink.dart';
 import 'main.dart' as home;
 import 'order_page.dart' as order_page;
 import 'order_page.dart';
 
-class FoodCard extends StatelessWidget {
-  final Food food;
+class DrinkCard extends StatelessWidget {
+  final Drink drink;
 
-  FoodCard({this.food});
+  DrinkCard({this.drink});
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +20,14 @@ class FoodCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(children: [
-                Text(food.name,
+                Text(drink.name,
                     style: TextStyle(fontSize: 18.0, color: Colors.grey[800])),
                 new Spacer(),
                 IconButton(
                   onPressed: () {
-                    home.order.foods.add((food));
+                    home.order.drinks.add((drink));
                     if (home.isOnOrderPage) {
-                      order_page.drinksFoodsList.add(food);
+                      order_page.drinksFoodsList.add(drink);
                       Navigator.pop(context);
                       Navigator.push(
                           context,
@@ -42,8 +42,8 @@ class FoodCard extends StatelessWidget {
                 home.isOnOrderPage
                     ? IconButton(
                         onPressed: () {
-                          home.order.foods.remove(food);
-                          order_page.drinksFoodsList.remove(food);
+                          home.order.drinks.remove(drink);
+                          order_page.drinksFoodsList.remove(drink);
                           Navigator.pop(context);
                           Navigator.push(
                               context,
@@ -57,9 +57,7 @@ class FoodCard extends StatelessWidget {
                     : Text(""),
               ]),
               SizedBox(height: 6.0),
-              Text(food.ingredients,
-                  style: TextStyle(fontSize: 14.0, color: Colors.grey[600])),
-              Text("€ " + food.price.toString(),
+              Text("€ " + drink.price.toString(),
                   style: TextStyle(fontSize: 14.0, color: Colors.grey[600]))
             ],
           ),

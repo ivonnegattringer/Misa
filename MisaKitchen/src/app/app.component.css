@@ -2,30 +2,43 @@
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 15em;
 }
-.orders li {
+order-detail {
   cursor: pointer;
   position: relative;
   left: 0;
-  background-color: #EEE;
+  background-color: rgb(240, 163, 163);
   margin: .5em;
   padding: .3em 0;
   border-radius: 4px;
+  width: 275px;
+  float: left;
 }
-.orders li:hover {
-  color: #607D8B;
-  background-color: #DDD;
+order-detail:hover {
+  color: #417691;
+  background-color: rgb(255, 187, 187);
   left: .1em;
 }
-.orders li.selected {
-  background-color: #CFD8DC;
+order-detail.selected {
+  background-color: #a04e4e;
   color: white;
 }
-.heroes li.selected:hover {
-  background-color: #BBD8DC;
-  color: white;
+.header {
+  overflow: hidden;
+  background-color: #ef5350;
+  padding: 20px 10px;
 }
-order-detail {
-  height: inherit;
+.header a {
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px; 
+  line-height: 25px;
+  border-radius: 4px;
+}
+.header a.logo {
+  font-size: 32px;
+  font-weight: bold;
 }
