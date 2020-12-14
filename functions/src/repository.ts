@@ -56,8 +56,14 @@ export class Repository{
     }
     static async createTable(table : Table, restaurant: string){
         if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
-        var ref = await admin.firestore().collection(restaurant+this.tables).doc()
-        table.tableId = ref.id;
+        var ref = null;
+        if(table.tableId == undefined){
+            ref = await admin.firestore().collection(restaurant+this.tables).doc()
+            table.tableId = ref.id;
+        }
+        else{
+            ref = await admin.firestore().collection(restaurant+this.tables).doc(table.tableId)
+        }
 
         await ref.withConverter(tableConverter)
             .set(table)
@@ -127,7 +133,7 @@ export class Repository{
     };
     
     static async getAll<T>(arr : string, restaurant:string) : Promise<T[]> {
-        if(!await this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
+        if(!this.restaurantExists(restaurant)) throw new Error( "Restaurant does not exist")
         const snapshot = await admin.firestore().collection(restaurant+arr).get();
         let t : T[]=[]
 
