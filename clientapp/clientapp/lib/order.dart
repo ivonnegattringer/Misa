@@ -26,7 +26,7 @@ class Order {
       'table': table.toJson(),
       'foods': foods,
       'drinks': drinks,
-      'done': done.toString()
+      'done': done
     };
   }
 }
